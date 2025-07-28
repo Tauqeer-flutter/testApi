@@ -12,7 +12,7 @@ func Login(c echo.Context) error {
 	err := c.Bind(&request)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.BaseResponse{
-			Message: "Invalid request",
+			Message: err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, response.BaseResponse{
