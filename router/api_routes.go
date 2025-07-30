@@ -9,5 +9,6 @@ func SetupRoutes(router *echo.Group) {
 	api := router.Group("")
 	{
 		api.POST("/login", controllers.Login)
+		api.POST("/register", controllers.Register)
 	}
 }

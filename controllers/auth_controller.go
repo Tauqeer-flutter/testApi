@@ -8,3 +8,7 @@ import (
 func Login(c echo.Context) error {
 	return services.Login(c)
 }
+
+func Register(c echo.Context) error {
+	return services.Register(c)
+}

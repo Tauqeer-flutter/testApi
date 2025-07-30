@@ -1,0 +1,18 @@
+### Login API
+POST {{base_url}}/login
+
+{
+    "email": "hello@yopmail.com",
+    "password": "12345678"
+}
+
+### Register API
+POST {{base_url}}/register
+
+{
+    "firstName": "Anas",
+    "lastName": "Patori",
+    "email": "anas.patori1@gmail.com",
+    "password": "12345678",
+    "age": 98
+}
