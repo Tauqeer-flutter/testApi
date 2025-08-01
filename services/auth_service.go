@@ -19,9 +19,43 @@ func Login(c echo.Context) error {
 			Message: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, response.BaseResponse{
+	var foundUser dtos.User
+	err = config.DB.Raw("SELECT * FROM users WHERE email = ?", request.Email).Scan(&foundUser).Error
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+			Message: err.Error(),
+		})
+	}
+	log.Debug("Found user: ", foundUser)
+	if foundUser.Id == 0 {
+		return c.JSON(http.StatusBadRequest, response.BaseResponse{
+			Message: "Invalid credentials",
+		})
+	} else if !utils.CheckPasswordHash(request.Password, foundUser.Password) {
+		return c.JSON(http.StatusBadRequest, response.BaseResponse{
+			Message: "Invalid credentials",
+		})
+	}
+	token, err := utils.GenerateUserJwt(foundUser.Email, foundUser.Id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+			Message: "Something went wrong!",
+		})
+	}
+	return c.JSON(http.StatusOK, response.SuccessAuthResponse{
 		Status:  true,
 		Message: "Login successful",
+		Token:   token,
+		User: response.UserData{
+			Id:         foundUser.Id,
+			FirstName:  foundUser.FirstName,
+			LastName:   foundUser.LastName,
+			Email:      foundUser.Email,
+			Age:        foundUser.Age,
+			IsVerified: foundUser.IsVerified,
+			CreatedAt:  foundUser.CreatedAt,
+			UpdatedAt:  foundUser.UpdatedAt,
+		},
 	})
 }
 
@@ -59,8 +93,26 @@ func Register(c echo.Context) error {
 			Message: result.Error.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, response.BaseResponse{
+	token, err := utils.GenerateUserJwt(user.Email, user.Id)
+	if err != nil {
+		log.Error(err)
+		return c.JSON(http.StatusInternalServerError, response.BaseResponse{
+			Message: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, response.SuccessAuthResponse{
 		Status:  true,
-		Message: "User created successfully",
+		Message: "Registration successful",
+		Token:   token,
+		User: response.UserData{
+			Id:         user.Id,
+			FirstName:  user.FirstName,
+			LastName:   user.LastName,
+			Email:      user.Email,
+			Age:        user.Age,
+			IsVerified: user.IsVerified,
+			CreatedAt:  user.CreatedAt,
+			UpdatedAt:  user.UpdatedAt,
+		},
 	})
 }

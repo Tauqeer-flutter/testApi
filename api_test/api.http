@@ -2,7 +2,7 @@
 POST {{base_url}}/login
 
 {
-    "email": "hello@yopmail.com",
+    "email": "uzair.kalhoro@yopmail.com",
     "password": "12345678"
 }
 
@@ -10,9 +10,9 @@ POST {{base_url}}/login
 POST {{base_url}}/register
 
 {
-    "firstName": "Anas",
-    "lastName": "Patori",
-    "email": "anas.patori1@gmail.com",
+    "firstName": "Uzair",
+    "lastName": "Kalhoro",
+    "email": "uzair.kalhoro@yopmail.com",
     "password": "12345678",
     "age": 98
 }

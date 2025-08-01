@@ -31,7 +31,7 @@ func ConnectDB() error {
 		return err
 	}
 
-	err = DB.AutoMigrate(&dtos.User{})
+	err = DB.AutoMigrate(&dtos.User{}, &dtos.Session{}, &dtos.Break{})
 	if err != nil {
 		log.Fatal("Error auto-migrating database: " + err.Error())
 		return err
