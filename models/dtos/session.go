@@ -4,7 +4,7 @@ import "time"
 
 type Session struct {
 	Id                uint      `gorm:"primaryKey;autoIncrement" json:"id" required:"false"`
-	StartTime         time.Time `json:"start_time"`
+	StartTime         time.Time `json:"start_time" validate:"required"`
 	EndTime           time.Time `json:"end_time"`
 	WorkDuration      int       `json:"work_duration"`
 	BreakDuration     int       `json:"break_duration"`

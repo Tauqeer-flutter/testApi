@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -9,6 +10,7 @@ import (
 	"testApi/models/dtos"
 )
 
+var JwtSecret []byte
 var DB *gorm.DB
 
 func ConnectDB() error {
@@ -17,6 +19,7 @@ func ConnectDB() error {
 		log.Fatal("Error loading .env file")
 		return err
 	}
+	JwtSecret = []byte(os.Getenv("JWT_SECRET"))
 	dbHost := os.Getenv("DB_HOST")
 	dbPort := os.Getenv("DB_PORT")
 	dbUser := os.Getenv("DB_USER")
@@ -24,6 +27,7 @@ func ConnectDB() error {
 	dbName := os.Getenv("DB_NAME")
 
 	dsn := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName + "?charset=utf8&parseTime=True&loc=Local"
+	fmt.Println("DSN: ", dsn)
 
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
