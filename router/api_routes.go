@@ -7,7 +7,8 @@ import (
 )
 
 func SetupRoutes(router *echo.Group) {
-	api := router.Group("")
+	router.GET("/sessions/images/:fileName", controllers.GetFile)
+	api := router.Group("/api/v1")
 	{
 		api.POST("/login", controllers.Login)
 		api.POST("/register", controllers.Register)

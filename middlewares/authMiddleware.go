@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"testApi/models/response"
 	"testApi/utils"
@@ -32,7 +31,6 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			})
 		}
 		expirySeconds := claims["expiry"]
-		fmt.Println("Expiry: ", expirySeconds)
 		expiry := time.Unix(int64(expirySeconds.(float64)), 0).UTC()
 		if err != nil {
 			return c.JSON(401, response.BaseResponse{
