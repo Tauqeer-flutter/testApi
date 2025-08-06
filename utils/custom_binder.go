@@ -17,7 +17,7 @@ func (cb *CustomBinder) Bind(i interface{}, c echo.Context) error {
 		return err
 	}
 	decoder := json.NewDecoder(io.NopCloser(io.MultiReader(io.NewSectionReader(bytes.NewReader(body), 0, int64(len(body))))))
-	decoder.DisallowUnknownFields() // 🚀 Strict JSON validation
+	decoder.DisallowUnknownFields()
 
 	if err := decoder.Decode(i); err != nil {
 		return fmt.Errorf("invalid JSON: check field names")

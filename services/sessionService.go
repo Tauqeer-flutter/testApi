@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"testApi/config"
 	"testApi/models/dtos"
+	"testApi/models/requests"
 	"testApi/models/response"
 	"testApi/utils"
 	"time"
@@ -37,6 +38,8 @@ func StartSession(c echo.Context) error {
 	session := dtos.Session{
 		StartTime:         startTime.UTC(),
 		WorkStartFilePath: fileName,
+		UserId:            uint(c.Get("userId").(float64)),
+		Mode:              dtos.Working,
 	}
 	value := config.DB.Create(&session)
 	if value.Error != nil {
@@ -45,8 +48,28 @@ func StartSession(c echo.Context) error {
 			Message: "Something went wrong while creating the session",
 		})
 	}
-	return c.JSON(200, response.BaseResponse{
+	return c.JSON(200, response.SessionCreatedResponse{
 		Status:  true,
 		Message: "Session created successfully",
+		Session: session,
+	})
+}
+
+func BreakSession(c echo.Context) error {
+	var request requests.BreakSessionRequest
+	if err := c.Bind(&request); err != nil {
+		return c.JSON(400, response.BaseResponse{
+			Message: err.Error(),
+		})
+	}
+	err := config.DB.Exec("UPDATE test_db.sessions SET work_duration = ?, break_duration = ?, extra_duration = ?, mode = ? WHERE id = ?;", request.WorkDuration, request.BreakDuration, request.ExtraDuration, dtos.OnBreak, request.SessionId).Error
+	if err != nil {
+		return c.JSON(500, response.BaseResponse{
+			Message: err.Error(), //"Something went wrong while updating the session",
+		})
+	}
+	return c.JSON(200, response.BaseResponse{
+		Status:  true,
+		Message: "Session updated successfully",
 	})
 }

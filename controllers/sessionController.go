@@ -8,3 +8,7 @@ import (
 func StartSession(c echo.Context) error {
 	return services.StartSession(c)
 }
+
+func BreakSession(c echo.Context) error {
+	return services.BreakSession(c)
+}

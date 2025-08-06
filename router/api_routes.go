@@ -15,6 +15,7 @@ func SetupRoutes(router *echo.Group) {
 		authGroup := api.Group("/sessions", middlewares.AuthMiddleware)
 		{
 			authGroup.POST("/start", controllers.StartSession)
+			authGroup.PATCH("/break", controllers.BreakSession)
 		}
 	}
 }
