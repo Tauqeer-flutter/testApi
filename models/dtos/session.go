@@ -18,9 +18,9 @@ type Session struct {
 
 type Break struct {
 	Id            uint      `gorm:"primaryKey;autoIncrement" json:"id" required:"false"`
-	Start         time.Time `json:"start"`
-	End           time.Time `json:"end"`
-	StartFilePath string    `json:"startFilePath"`
+	Start         time.Time `json:"start" validate:"required"`
+	End           time.Time `json:"end" validate:"required"`
+	StartFilePath string    `json:"startFilePath" validate:"required"`
 	EndFilePath   string    `json:"endFilePath"`
 	SessionId     uint      `gorm:"Constrain:OnDelete:CASCADE;foreignKey:SessionId;references:Id" json:"sessionId"`
 }

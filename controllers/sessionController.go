@@ -12,3 +12,7 @@ func StartSession(c echo.Context) error {
 func BreakSession(c echo.Context) error {
 	return services.BreakSession(c)
 }
+
+func EndBreak(c echo.Context) error {
+	return services.EndBreak(c)
+}

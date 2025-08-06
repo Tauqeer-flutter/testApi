@@ -16,6 +16,7 @@ func SetupRoutes(router *echo.Group) {
 		{
 			authGroup.POST("/start", controllers.StartSession)
 			authGroup.PATCH("/break", controllers.BreakSession)
+			authGroup.PATCH("/end-break", controllers.EndBreak)
 		}
 	}
 }
